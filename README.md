@@ -10,9 +10,9 @@ Send OpenCode events (permission requests, task completion, errors) as push noti
 OpenCode event -> Plugin -> Bark API -> APNs -> iPhone -> Apple Watch
 ```
 
-- `permission.asked` -> "OpenCode 权限请求"
-- `session.idle` -> "OpenCode 任务完成"
-- `session.error` -> "OpenCode 错误"
+- `permission.asked` → "OpenCode 权限请求"
+- `session.idle` → "OpenCode 任务完成"
+- `session.error` → "OpenCode 错误"
 
 ## Install
 
@@ -22,7 +22,7 @@ App Store: [Bark - Custom Notifications](https://apps.apple.com/app/id1403753865
 
 ### 2. Get your Device Key
 
-Open Bark app -> copy the test URL -> extract the key:
+Open Bark app → copy the test URL → extract the key:
 
 ```
 https://api.day.app/xqeb5G6i6EqQKY5ujxVRF/Test
@@ -40,13 +40,17 @@ bun install
 
 ### 4. Configure
 
-**Set environment variable:**
+**（1）Set your Bark key (required):**
+
+Open a **PowerShell** terminal and run:
 
 ```powershell
 [Environment]::SetEnvironmentVariable("BARK_DEVICE_KEY", "your_key_here", "User")
 ```
 
-**Add to your `opencode.jsonc`:**
+**（2）Register the plugin in OpenCode:**
+
+Edit `C:\Users\<you>\.config\opencode\opencode.jsonc`:
 
 ```jsonc
 {
@@ -60,37 +64,52 @@ bun install
 
 You should see `[watch-bridge] enabled: permission, idle, error` in the terminal.
 
-## Usage
+---
 
-Just use OpenCode normally. Notifications arrive automatically:
+## How to Change Settings
 
-| Event | Notification |
-|---|---|
-| Permission requested (bash, write, etc.) | "OpenCode 权限请求" |
-| AI finishes responding | "OpenCode 任务完成" |
-| Session error occurs | "OpenCode 错误" |
+**All configuration is done via Windows environment variables. There are zero files to edit.**
 
-## Filter Events
+There are two ways to set them:
 
-Set env to `0` to disable a specific event type:
+### Method A: Permanent (survives restart)
 
 ```powershell
-[Environment]::SetEnvironmentVariable("WATCH_BRIDGE_IDLE", "0", "User")
+# PowerShell, run once
+[Environment]::SetEnvironmentVariable("VAR_NAME", "value", "User")
 ```
 
-| Variable | Default | Description |
+Then restart OpenCode.
+
+### Method B: Temporary (current terminal only)
+
+```powershell
+$env:VAR_NAME = "value"
+```
+
+Then run `opencode` in the same terminal.
+
+---
+
+## Configuration Reference
+
+### Required
+
+| Variable | Description |
+|---|---|
+| `BARK_DEVICE_KEY` | Your Bark device key (from step 2 above) |
+
+### Event Toggles (set to `0` to disable)
+
+| Variable | Default | Controls |
 |---|---|---|
 | `WATCH_BRIDGE_PERMISSION` | `1` | Permission request notifications |
 | `WATCH_BRIDGE_IDLE` | `1` | Task completion notifications |
 | `WATCH_BRIDGE_ERROR` | `1` | Error notifications |
 
-## Custom Sounds
+### Sounds
 
-```powershell
-[Environment]::SetEnvironmentVariable("WATCH_BRIDGE_SOUND_PERMISSION", "chime", "User")
-```
-
-| Variable | Default | Description |
+| Variable | Default | Controls |
 |---|---|---|
 | `WATCH_BRIDGE_SOUND_PERMISSION` | `alarm` | Sound for permission requests |
 | `WATCH_BRIDGE_SOUND_IDLE` | `bell` | Sound for task completion |
@@ -98,13 +117,29 @@ Set env to `0` to disable a specific event type:
 
 Available sounds: `alarm`, `bell`, `birdsong`, `chime`, `crystal`, `news`, `note`, `update`, or any iOS system sound name.
 
-## Self-hosted Bark Server
+### Server
+
+| Variable | Default | Description |
+|---|---|---|
+| `BARK_SERVER_URL` | `https://api.day.app` | Self-hosted Bark server URL |
+
+---
+
+## Examples
 
 ```powershell
-[Environment]::SetEnvironmentVariable("BARK_SERVER_URL", "https://your-bark-server.com", "User")
+# Only get errors and permissions — mute "task complete"
+[Environment]::SetEnvironmentVariable("WATCH_BRIDGE_IDLE", "0", "User")
+
+# Permission = gentle chime, Error = loud alarm
+[Environment]::SetEnvironmentVariable("WATCH_BRIDGE_SOUND_PERMISSION", "chime", "User")
+[Environment]::SetEnvironmentVariable("WATCH_BRIDGE_SOUND_ERROR", "alarm", "User")
+
+# Use your own Bark server
+[Environment]::SetEnvironmentVariable("BARK_SERVER_URL", "https://mybark.com", "User")
 ```
 
-Default: `https://api.day.app`
+After any change, restart OpenCode.
 
 ## License
 
