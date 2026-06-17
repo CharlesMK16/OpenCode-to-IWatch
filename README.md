@@ -10,9 +10,9 @@ Send OpenCode events (permission requests, task completion, errors) as push noti
 OpenCode event -> Plugin -> Bark API -> APNs -> iPhone -> Apple Watch
 ```
 
-- `permission.asked` → "权限请求"
-- `session.idle` → "任务完成"
-- `session.error` → "发生错误"
+- `permission.asked` -> "OpenCode 权限请求"
+- `session.idle` -> "OpenCode 任务完成"
+- `session.error` -> "OpenCode 错误"
 
 ## Install
 
@@ -22,7 +22,7 @@ App Store: [Bark - Custom Notifications](https://apps.apple.com/app/id1403753865
 
 ### 2. Get your Device Key
 
-Open Bark app → copy the test URL → extract the key:
+Open Bark app -> copy the test URL -> extract the key:
 
 ```
 https://api.day.app/xqeb5G6i6EqQKY5ujxVRF/Test
@@ -33,7 +33,6 @@ https://api.day.app/xqeb5G6i6EqQKY5ujxVRF/Test
 ### 3. Install the plugin
 
 ```bash
-# Clone or copy to your OpenCode plugins directory
 git clone https://github.com/YOUR_USER/opencode-watch-bridge D:/config/opencode/plugins/watch-bridge
 cd D:/config/opencode/plugins/watch-bridge
 bun install
@@ -59,7 +58,7 @@ bun install
 
 ### 5. Restart OpenCode
 
-You should see `[watch-bridge] Bark plugin enabled` in the terminal.
+You should see `[watch-bridge] enabled: permission, idle, error` in the terminal.
 
 ## Usage
 
@@ -71,12 +70,38 @@ Just use OpenCode normally. Notifications arrive automatically:
 | AI finishes responding | "OpenCode 任务完成" |
 | Session error occurs | "OpenCode 错误" |
 
-## Custom Server
+## Filter Events
 
-Bark supports self-hosting. If using your own Bark server, set:
+Set env to `0` to disable a specific event type:
 
 ```powershell
-$env:BARK_SERVER_URL = "https://your-bark-server.com"
+[Environment]::SetEnvironmentVariable("WATCH_BRIDGE_IDLE", "0", "User")
+```
+
+| Variable | Default | Description |
+|---|---|---|
+| `WATCH_BRIDGE_PERMISSION` | `1` | Permission request notifications |
+| `WATCH_BRIDGE_IDLE` | `1` | Task completion notifications |
+| `WATCH_BRIDGE_ERROR` | `1` | Error notifications |
+
+## Custom Sounds
+
+```powershell
+[Environment]::SetEnvironmentVariable("WATCH_BRIDGE_SOUND_PERMISSION", "chime", "User")
+```
+
+| Variable | Default | Description |
+|---|---|---|
+| `WATCH_BRIDGE_SOUND_PERMISSION` | `alarm` | Sound for permission requests |
+| `WATCH_BRIDGE_SOUND_IDLE` | `bell` | Sound for task completion |
+| `WATCH_BRIDGE_SOUND_ERROR` | `alarm` | Sound for errors |
+
+Available sounds: `alarm`, `bell`, `birdsong`, `chime`, `crystal`, `news`, `note`, `update`, or any iOS system sound name.
+
+## Self-hosted Bark Server
+
+```powershell
+[Environment]::SetEnvironmentVariable("BARK_SERVER_URL", "https://your-bark-server.com", "User")
 ```
 
 Default: `https://api.day.app`
