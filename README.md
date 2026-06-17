@@ -40,15 +40,7 @@ bun install
 
 ### 4. Configure
 
-**（1）Set your Bark key (required):**
-
-Open a **PowerShell** terminal and run:
-
-```powershell
-[Environment]::SetEnvironmentVariable("BARK_DEVICE_KEY", "your_key_here", "User")
-```
-
-**（2）Register the plugin in OpenCode:**
+**（1）Register the plugin in OpenCode:**
 
 Edit `C:\Users\<you>\.config\opencode\opencode.jsonc`:
 
@@ -59,6 +51,15 @@ Edit `C:\Users\<you>\.config\opencode\opencode.jsonc`:
   ]
 }
 ```
+
+**（2）Launch the settings dashboard:**
+
+```bash
+cd D:/config/opencode/plugins/watch-bridge
+bun run dashboard
+```
+
+Then open **http://localhost:18921** in your browser. Enter your Bark device key, toggle which events to receive, pick sounds — all in a GUI. Click **Save Settings**.
 
 ### 5. Restart OpenCode
 
