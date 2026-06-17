@@ -39,7 +39,7 @@ describe("StateManager", () => {
     expect(state.get("task-2")).toBeUndefined()
   })
 
-  it("should cleanup expired requests", async () => {
+  it("should cleanup expired requests", () => {
     const old: PendingRequest = {
       id: "req-old",
       type: "permission",
