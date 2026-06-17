@@ -3,6 +3,7 @@ import { WeComClient } from "./wecom"
 import { WeComCrypto } from "./crypto"
 import { StateManager } from "./state"
 import { createCallbackServer } from "./server"
+import { createNgrokManager } from "./ngrok"
 import {
   buildPermissionCard,
   buildSessionIdleCard,
@@ -95,6 +96,21 @@ export const WatchBridgePlugin: Plugin = async (ctx) => {
   )
 
   console.info(`[watch-bridge] Callback server started on port ${server.port}`)
+
+  const ngrokToken = (config as any).ngrok_auth_token
+  if (ngrokToken) {
+    try {
+      const ngrok = createNgrokManager(18920, ngrokToken)
+      await ngrok.start()
+      const publicUrl = ngrok.getPublicUrl()
+      if (publicUrl) {
+        console.info(`[watch-bridge] ngrok public URL: ${publicUrl}`)
+        console.info(`[watch-bridge] Set WeCom callback URL to: ${publicUrl}/wecom/callback`)
+      }
+    } catch (err) {
+      console.warn("[watch-bridge] ngrok failed (optional):", err)
+    }
+  }
 
   return {
     event: async ({ event }) => {
