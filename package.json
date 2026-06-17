@@ -1,0 +1,12 @@
+{
+  "name": "opencode-watch-bridge",
+  "version": "0.1.0",
+  "type": "module",
+  "dependencies": {
+    "@opencode-ai/plugin": "^1.14.33",
+    "xml2js": "^0.6.2"
+  },
+  "devDependencies": {
+    "bun-types": "latest"
+  }
+}
