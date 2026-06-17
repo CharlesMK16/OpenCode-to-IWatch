@@ -1,8 +1,17 @@
-# OpenCode Watch Bridge
+# OpenCode Watch Bridge ⌚
 
 Send OpenCode events (permission requests, task completion, errors) as push notifications to your **Apple Watch** via [Bark](https://github.com/Finb/Bark).
 
 > 将 OpenCode 的权限请求、任务完成、错误等信息通过 Bark 推送到你的 Apple Watch。
+
+## Features
+
+- **Zero-config push** — set your Bark key once, forget it
+- **Per-event filtering** — toggle permission / idle / error independently
+- **Custom sounds** — different ringtones for different event types
+- **Web dashboard** — GUI to manage all settings, no terminal needed
+- **Self-hosted support** — use your own Bark server
+- **Apple Watch native** — notifications appear on wrist automatically
 
 ## How It Works
 
@@ -33,7 +42,7 @@ https://api.day.app/xqeb5G6i6EqQKY5ujxVRF/Test
 ### 3. Install the plugin
 
 ```bash
-git clone https://github.com/YOUR_USER/opencode-watch-bridge D:/config/opencode/plugins/watch-bridge
+git clone https://github.com/CharlesMK16/OpenCode-to-IWatch.git D:/config/opencode/plugins/watch-bridge
 cd D:/config/opencode/plugins/watch-bridge
 bun install
 ```
@@ -142,6 +151,19 @@ Available sounds: `alarm`, `bell`, `birdsong`, `chime`, `crystal`, `news`, `note
 
 After any change, restart OpenCode.
 
+## Project Structure
+
+```
+watch-bridge/
+├── src/
+│   └── index.ts        # OpenCode plugin (event hooks)
+├── dashboard.ts        # Web settings dashboard
+├── package.json
+├── tsconfig.json
+├── LICENSE             # MIT
+└── README.md
+```
+
 ## License
 
-MIT
+MIT © CharlesMK16
