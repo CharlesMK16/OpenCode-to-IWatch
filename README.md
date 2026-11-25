@@ -1,4 +1,4 @@
-# OpenCode Watch Bridge ⌚
+# OpenCode Watch Bridge
 
 Send OpenCode events (permission requests, task completion, errors) as push notifications to your **Apple Watch** via [Bark](https://github.com/Finb/Bark).
 
